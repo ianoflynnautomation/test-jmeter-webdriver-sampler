@@ -1,13 +1,13 @@
 # File: azure-pipelines.yml
 trigger:
-  - main
+  - master
 
 schedules:
   cron: "0 13 * * *"
   displayName: Daily load test run
   branches:
     include:
-      - dev
+      - master
     always: true
 
 parameters:
@@ -16,8 +16,8 @@ parameters:
   type: string
   default:
   values:
-  -
-  -
+  - https://www.saucedemo.com
+  - https://www.saucedemo.test.com
 - name: users
   displayName: Number of concurrent users
   type: number
