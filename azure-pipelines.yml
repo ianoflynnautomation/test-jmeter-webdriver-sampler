@@ -1,0 +1,101 @@
+# File: azure-pipelines.yml
+trigger:
+  - main
+
+schedules:
+  cron: "0 13 * * *"
+  displayName: Daily load test run
+  branches:
+    include:
+      - dev
+    always: true
+
+parameters:
+- name: env
+  displayName: Environment
+  type: string
+  default:
+  values:
+  -
+  -
+- name: users
+  displayName: Number of concurrent users
+  type: number
+  default: 1
+  values:
+    - 1
+    - 2
+    - 3
+    - 4
+    - 5
+
+pool:
+  vmImage: windows-latest
+
+jobs:
+  - job: RunJmeterTests
+    displayName: 'Run Jmeter Tests'
+    timeoutInMinutes: 120
+    steps:
+      - powerShell: |
+          $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12,Tls13'
+          [System.Net.ServicePointManager]::SecurityProtocols = $AllProtocols
+          Invoke-WebRequest -Uri https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.zip -OutFile c:\temp\jmeter.zip   
+          Expand-Archive -LiteralPath 'c:\temp\jmeter.zip' -DestinationPath c:\temp
+          Invoke-WebRequest -Uri https://jmeter-plugins.org/files/packages/jpgc-webdriver-3.2.zip -OutFile c:\temp\apache-jmeter-5.5\jpgc-webdriver-3.2.zip
+          Expand-Archive -LiteralPath 'c:\temp\apache-jmeter-5.5\jpgc-webdriver-3.2.zip' -DestinationPath c:\temp\apache-jmeter-5.5
+          Invoke-WebRequest -Uri https://jmeter-plugins.org/files/packages/jmeter-datadog-backend-listener-0.3.0.zip -OutFile c:\temp\apache-jmeter-5.5\jmeter-datadog-backend-listener-0.3.0.zip
+          Expand-Archive -LiteralPath 'c:\temp\apache-jmeter-5.5\jmeter-datadog-backend-listener-0.3.0.zip' -DestinationPath c:\temp\apache-jmeter-5.5
+        displayName: 'Install dependency packages'
+
+      - ${{ if eq(parameters.env, '') }}:
+        - template: whitelist-agent-ip.jml
+
+      - ${{ if eq(parameters.env, '') }}:
+          - template: whitelist-agent-ip.jml
+            parameters:
+              resourceGroup: ''
+              subscription: ''
+
+      - powershell: | 
+          (Get-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx) -Replace 'ThreadGroup.num_threads">1<', 'ThreadGroup.num_threads">${{parameters.users}}<' | Set-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx
+        displayName: ''Replace number of concurrent users'
+
+      - powershell: |
+          (Get-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx) -Replace 'http://localhost:3000', '{{parameters.env}}' | Set-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx
+        displayName: ''Replace number of concurrent users'
+
+      - script: |
+          C:\temp\apache-jmeter-5.5\bin\jmeter.bat -n -t jmeter_selenium_tests.jmx -l results/results.jtl -j results/output.log -e -o report
+        displayName: 'Run Jmeter Tests'
+
+      - script: |
+          python jtl_junit_converter.py results/results.jtl results/output.xml
+        displayName: 'Results: Convert Jmeter Results to Junit format'
+
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'results/output.xml'
+          failTaskOnFailedTests: false
+        displayName: 'Results: Publish Load Test Results'
+
+      - publish: $(System.DefaultWorkingDirectory)/results
+        artifact: jmeter-results
+        condition: always()
+        displayName: 'Results: Publish Load Test Artifact'
+
+      - task: PublishPipelineArtifact@1
+        inputs:
+          targetPath: report
+          artifact: jmeter-report
+        displayName: 'Publish JMeter HTML Report'
+
+
+
+
+
+
+
+
+
