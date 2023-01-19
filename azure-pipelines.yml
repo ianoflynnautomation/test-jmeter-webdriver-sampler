@@ -38,8 +38,6 @@ jobs:
     timeoutInMinutes: 120
     steps:
       - powershell: |
-         # $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12,Tls13'
-         # [System.Net.ServicePointManager]::SecurityProtocols = $AllProtocols
           Invoke-WebRequest -Uri https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.zip -OutFile c:\temp\jmeter.zip   
           Expand-Archive -LiteralPath 'c:\temp\jmeter.zip' -DestinationPath c:\temp
           Invoke-WebRequest -Uri https://jmeter-plugins.org/files/packages/jpgc-webdriver-3.2.zip -OutFile c:\temp\apache-jmeter-5.5\jpgc-webdriver-3.2.zip
