@@ -29,7 +29,9 @@ parameters:
     - 5
 
 pool:
-  vmImage: windows-latest
+  name: Default
+  demands:
+   - agent.name -equals Ians-MacBook-Pro
 
 jobs:
   - job: RunJmeterTests
