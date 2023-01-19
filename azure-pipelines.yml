@@ -48,14 +48,14 @@ jobs:
          # Expand-Archive -LiteralPath 'c:\temp\apache-jmeter-5.5\jmeter-datadog-backend-listener-0.3.0.zip' -DestinationPath c:\temp\apache-jmeter-5.5
         displayName: 'Install dependency packages'
 
-      - ${{ if eq(parameters.env, '') }}:
-        - template: whitelist-agent-ip.jml
+     # - ${{ if eq(parameters.env, '') }}:
+     #   - template: whitelist-agent-ip.jml
 
-      - ${{ if eq(parameters.env, '') }}:
-          - template: whitelist-agent-ip.jml
-            parameters:
-              resourceGroup: ''
-              subscription: ''
+     # - ${{ if eq(parameters.env, '') }}:
+     #     - template: whitelist-agent-ip.jml
+     #       parameters:
+      #        resourceGroup: ''
+     #        subscription: ''
 
       - powershell: | 
           (Get-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx) -Replace 'ThreadGroup.num_threads">1<', 'ThreadGroup.num_threads">${{parameters.users}}<' | Set-Content $(System.DefaultWorkingDirectory)/test/jmeter_selenium_tests.jmx
