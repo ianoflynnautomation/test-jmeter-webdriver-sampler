@@ -7,8 +7,7 @@ schedules:
   displayName: Daily load test run
   branches:
     include:
-      - master
-    always: true
+    - master
 
 parameters:
 - name: env
