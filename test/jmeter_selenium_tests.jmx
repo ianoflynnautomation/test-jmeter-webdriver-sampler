@@ -48,13 +48,18 @@
         <stringProp name="WebDriverConfig.no_proxy">localhost</stringProp>
         <boolProp name="WebDriverConfig.maximize_browser">true</boolProp>
         <boolProp name="WebDriverConfig.reset_per_iteration">false</boolProp>
-        <boolProp name="WebDriverConfig.dev_mode">true</boolProp>
-        <stringProp name="ChromeDriverConfig.chromedriver_path">//Users//ianoflynn//chromedriver//chromedriver</stringProp>
+        <boolProp name="WebDriverConfig.dev_mode">false</boolProp>
+        <stringProp name="ChromeDriverConfig.chromedriver_path">C:\selenium\chromedriver\chromedriver.exe</stringProp>
         <boolProp name="ChromeDriverConfig.android_enabled">false</boolProp>
         <boolProp name="ChromeDriverConfig.headless_enabled">false</boolProp>
         <boolProp name="ChromeDriverConfig.insecurecerts_enabled">true</boolProp>
         <boolProp name="ChromeDriverConfig.incognito_enabled">false</boolProp>
         <boolProp name="ChromeDriverConfig.no_sandbox_enabled">false</boolProp>
+        <boolProp name="WebDriverConfig.acceptinsecurecerts">false</boolProp>
+        <stringProp name="WebDriverConfig.driver_path">C:\selenium\chromedriver\chromedriver.exe</stringProp>
+        <boolProp name="WebDriverConfig.headless">false</boolProp>
+        <stringProp name="ChromeDriverConfig.additional_args"></stringProp>
+        <stringProp name="ChromeDriverConfig.binary_path"></stringProp>
       </com.googlecode.jmeter.plugins.webdriver.config.ChromeDriverConfig>
       <hashTree/>
       <ThreadGroup guiclass="ThreadGroupGui" testclass="ThreadGroup" testname="[TG] Sample Test" enabled="true">
@@ -72,27 +77,28 @@
       </ThreadGroup>
       <hashTree>
         <com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler guiclass="com.googlecode.jmeter.plugins.webdriver.sampler.gui.WebDriverSamplerGui" testclass="com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler" testname="jp@gc - WebDriver Sampler" enabled="true">
-          <stringProp name="WebDriverSampler.script">var pkg = JavaImporter(org.openqa.selenium, org.openqa.selenium.support.ui)
-var support_ui = JavaImporter(org.openqa.selenium.support.ui)
-var wait = new support_ui.WebDriverWait(WDS.browser, 20)
-var conditions = org.openqa.selenium.support.ui.ExpectedConditions 
-var vars = org.apache.jmeter.threads.JMeterContextService.getContext().getVariables()
-var actions = JavaImporter(org.openqa.selenium.interactions.Actions)
-var builder = new actions.Actions(WDS.browser)
-var thread = java.lang.Thread;
-var keys = org.openqa.selenium.Keys
+          <stringProp name="WebDriverSampler.script">var pkg = JavaImporter(org.openqa.selenium)
+var support_ui = JavaImporter(org.openqa.selenium.support.ui.WebDriverWait)
+var conditions = org.openqa.selenium.support.ui.ExpectedConditions
+var wait = new support_ui.WebDriverWait(WDS.browser, 5000)
+//var vars = org.apache.jmeter.threads.JMeterContextService.getContext().getVariables()
+//var actions = JavaImporter(org.openqa.selenium.interactions.Actions)
+//var builder = new actions.Actions(WDS.browser)
+//var thread = java.lang.Thread;
+//var keys = org.openqa.selenium.Keys
 
 
 	WDS.browser.get(&quot;${ENV}&quot;);
-	
-	WDS.sampleResult.sampleStart();
 	wait.until(conditions.visibilityOfElementLocated(pkg.By.cssSelector(&quot;[data-test=&apos;username&apos;]&quot;))).sendKeys(&quot;standard_user&quot;);
 	wait.until(conditions.visibilityOfElementLocated(pkg.By.cssSelector(&quot;[data-test=&apos;password&apos;]&quot;))).sendKeys(&quot;secret_sauce&quot;);
 	wait.until(conditions.elementToBeClickable(pkg.By.cssSelector(&quot;[data-test=&apos;login-button&apos;]&quot;))).click();
+	
+	WDS.sampleResult.sampleStart();
+	wait.until(conditions.visibilityOfElementLocated(pkg.By.xpath(&quot;//span[contains(text(),&apos;Products&apos;)]&quot;)));
 	WDS.sampleResult.sampleEnd();
 </stringProp>
           <stringProp name="WebDriverSampler.parameters"></stringProp>
-          <stringProp name="WebDriverSampler.language">beanshell</stringProp>
+          <stringProp name="WebDriverSampler.language">javascript</stringProp>
         </com.googlecode.jmeter.plugins.webdriver.sampler.WebDriverSampler>
         <hashTree/>
         <ResultCollector guiclass="TableVisualizer" testclass="ResultCollector" testname="View Results in Table" enabled="true">
@@ -168,49 +174,6 @@ var keys = org.openqa.selenium.Keys
           </objProp>
           <stringProp name="filename"></stringProp>
         </ResultCollector>
-        <hashTree/>
-        <BackendListener guiclass="BackendListenerGui" testclass="BackendListener" testname="Backend Listener" enabled="true">
-          <elementProp name="arguments" elementType="Arguments" guiclass="ArgumentsPanel" testclass="Arguments" enabled="true">
-            <collectionProp name="Arguments.arguments">
-              <elementProp name="graphiteMetricsSender" elementType="Argument">
-                <stringProp name="Argument.name">graphiteMetricsSender</stringProp>
-                <stringProp name="Argument.value">org.apache.jmeter.visualizers.backend.graphite.TextGraphiteMetricsSender</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="graphiteHost" elementType="Argument">
-                <stringProp name="Argument.name">graphiteHost</stringProp>
-                <stringProp name="Argument.value"></stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="graphitePort" elementType="Argument">
-                <stringProp name="Argument.name">graphitePort</stringProp>
-                <stringProp name="Argument.value">2003</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="rootMetricsPrefix" elementType="Argument">
-                <stringProp name="Argument.name">rootMetricsPrefix</stringProp>
-                <stringProp name="Argument.value">jmeter.</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="summaryOnly" elementType="Argument">
-                <stringProp name="Argument.name">summaryOnly</stringProp>
-                <stringProp name="Argument.value">false</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="samplersList" elementType="Argument">
-                <stringProp name="Argument.name">samplersList</stringProp>
-                <stringProp name="Argument.value"></stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-              <elementProp name="percentiles" elementType="Argument">
-                <stringProp name="Argument.name">percentiles</stringProp>
-                <stringProp name="Argument.value">99;95;90</stringProp>
-                <stringProp name="Argument.metadata">=</stringProp>
-              </elementProp>
-            </collectionProp>
-          </elementProp>
-          <stringProp name="classname">org.apache.jmeter.visualizers.backend.graphite.GraphiteBackendListenerClient</stringProp>
-        </BackendListener>
         <hashTree/>
         <ResultCollector guiclass="ViewResultsFullVisualizer" testclass="ResultCollector" testname="View Results Tree" enabled="true">
           <boolProp name="ResultCollector.error_logging">false</boolProp>
