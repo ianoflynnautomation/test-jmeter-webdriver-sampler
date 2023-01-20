@@ -31,7 +31,7 @@ parameters:
 pool:
   name: Default
   demands:
-   - agent.name -equals DESKTOP-S4879AC
+   - agent.name -equals Ians-Windows-Laptop
 jobs:
   - job: RunJmeterTests
     displayName: 'Run Jmeter Tests'
