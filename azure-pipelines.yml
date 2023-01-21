@@ -46,7 +46,7 @@ jobs:
         displayName: 'Replace number of concurrent users'
 
       - script: |
-          C:\temp\apache-jmeter-5.5\bin\jmeter.bat -n -t jmeter_selenium_tests.jmx -l results/results.jtl -j results/output.log -e -o report
+          C:\temp\apache-jmeter-5.5\bin\jmeter.bat -n -t /test/jmeter_selenium_tests.jmx -l results/results.jtl -j results/output.log -e -o report
         displayName: 'Run Jmeter Tests'
 
       - script: |
