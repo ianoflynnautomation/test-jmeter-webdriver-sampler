@@ -57,7 +57,8 @@ jobs:
         inputs:
           testResultsFormat: 'JUnit'
           testResultsFiles: '**/results/output.xml'
-          failTaskOnFailedTests: false
+          failTaskOnFailedTests: true
+          searchFolder: $(System.DefaultWorkingDirectory)
         displayName: 'Results: Publish Load Test Results'
 
       - publish: $(System.DefaultWorkingDirectory)/results
