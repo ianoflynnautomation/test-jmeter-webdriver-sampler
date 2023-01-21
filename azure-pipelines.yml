@@ -53,12 +53,12 @@ jobs:
           python $(System.DefaultWorkingDirectory)/src/jtl_junit_converter.py results/results.jtl results/output.xml
         displayName: 'Results: Convert Jmeter Results to Junit format'
 
-      #- task: PublishTestResults@2
-      #  inputs:
-      #    testResultsFormat: 'JUnit'
-      #   testResultsFiles: 'results/output.xml'
-      #    failTaskOnFailedTests: false
-      #  displayName: 'Results: Publish Load Test Results'
+      - task: PublishTestResults@2
+        inputs:
+          testResultsFormat: 'JUnit'
+          testResultsFiles: 'results/output.xml'
+          failTaskOnFailedTests: false
+        displayName: 'Results: Publish Load Test Results'
 
       - publish: $(System.DefaultWorkingDirectory)/results
         artifact: jmeter-results
