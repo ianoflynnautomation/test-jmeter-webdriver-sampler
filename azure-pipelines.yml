@@ -61,11 +61,6 @@ jobs:
           publishRunAttachments: false
         displayName: 'Results: Publish Load Test Results'
 
-      - publish: $(System.DefaultWorkingDirectory)/results
-        artifact: jmeter-results
-        condition: always()
-        displayName: 'Results: Publish Load Test Artifact'
-
       - task: PublishPipelineArtifact@1
         inputs:
           targetPath: report
