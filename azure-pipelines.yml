@@ -58,6 +58,7 @@ jobs:
           testResultsFormat: 'JUnit'
           testResultsFiles: 'results/output.xml'
           failTaskOnFailedTests: false
+          publishRunAttachments: false
         displayName: 'Results: Publish Load Test Results'
 
       - publish: $(System.DefaultWorkingDirectory)/results
