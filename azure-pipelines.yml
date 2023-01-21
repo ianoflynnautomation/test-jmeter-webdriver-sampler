@@ -50,7 +50,7 @@ jobs:
         displayName: 'Run Jmeter Tests'
 
       - script: |
-          python jtl_junit_converter.py results/results.jtl results/output.xml
+          python $(System.DefaultWorkingDirectory)/src/jtl_junit_converter.py results/results.jtl results/output.xml
         displayName: 'Results: Convert Jmeter Results to Junit format'
 
       - task: PublishTestResults@2
