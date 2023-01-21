@@ -37,7 +37,7 @@ jobs:
     displayName: 'Run Jmeter Tests'
     timeoutInMinutes: 120
     steps:
-    # If not using a self hosted agent remove comments.
+    # If not using a self-hosted agent remove comments.
     # - powershell: |
     #     $AllProtocols = [System.Net.SecurityProtocolType]'Ssl3,Tls,Tls11,Tls12,Tls13'
     #     [System.Net.ServicePointManager]::SecurityProtocols = $AllProtocols
