@@ -56,7 +56,7 @@ jobs:
       - task: PublishTestResults@2
         inputs:
           testResultsFormat: 'JUnit'
-          testResultsFiles: 'results/output.xml'
+          testResultsFiles: '**/results/output.xml'
           failTaskOnFailedTests: false
         displayName: 'Results: Publish Load Test Results'
 
