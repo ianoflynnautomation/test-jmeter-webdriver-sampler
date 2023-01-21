@@ -37,7 +37,19 @@ jobs:
     displayName: 'Run Jmeter Tests'
     timeoutInMinutes: 120
     steps:
-      - powershell: |               
+      - powershell: | 
+          add-type @"
+          using System.Net;
+          using System.Security.Cryptography.X509Certificates;
+          public class TrustAllCertsPolicy : ICertificatePolicy {
+          public bool CheckValidationResult(
+            ServicePoint srvPoint, X509Certificate certificate,
+            WebRequest request, int certificateProblem) {
+            return true;
+            }
+            }
+          "@
+          [System.Net.ServicePointManager]::CertificatePolicy = New-Object TrustAllCertsPolicy              
           [System.Net.ServicePointManager]::SecurityProtocol = [System.Net.SecurityProtocolType]::Tls11 -bor [System.Net.SecurityProtocolType]::Tls12 -bor [System.Net.SecurityProtocolType]::Ssl3 -bor [System.Net.SecurityProtocolType]::Tls -bor [System.Net.SecurityProtocolType]::Tls13;
           Invoke-WebRequest -Uri https://archive.apache.org/dist/jmeter/binaries/apache-jmeter-5.5.zip -OutFile c:\temp\jmeter.zip   
           Expand-Archive -LiteralPath 'c:\temp\jmeter.zip' -DestinationPath c:\temp
