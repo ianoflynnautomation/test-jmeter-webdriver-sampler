@@ -1,0 +1,36 @@
+{
+  "name": "test-jmeter-webdriver-sampler",
+  "version": "1.0.0",
+  "description": "# Summary Jmeter load test project to be run in an azure pipeline",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ianoflynnautomation/test-jmeter-webdriver-sampler.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ianoflynnautomation/test-jmeter-webdriver-sampler/issues"
+  },
+  "homepage": "https://github.com/ianoflynnautomation/test-jmeter-webdriver-sampler#readme",
+  "dependencies": {
+    "@semantic-release/changelog": "github:semantic-release/changelog",
+    "@semantic-release/commit-analyzer": "github:semantic-release/commit-analyzer",
+    "@semantic-release/exec": "github:semantic-release/exec",
+    "@semantic-release/git": "github:semantic-release/git",
+    "@semantic-release/github": "github:semantic-release/github",
+    "@semantic-release/npm": "github:semantic-release/npm",
+    "@semantic-release/release-notes-generator": "github:semantic-release/release-notes-generator",
+    "conventional-changelog-eslint": "^3.0.9",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.1.0",
+    "nodeenv": "^3.0.75",
+    "semantic-release": "^20.1.0"
+  }
+}
